@@ -152,3 +152,19 @@ workflows:
       jobs:
         - create_infrastructure
 ```                
+
+- > Push your local change to the remote Github repo. Your commits will automatically trigger a CircleCI build.
+
+![Screenshot from 2022-07-12 19-55-52](https://user-images.githubusercontent.com/40290711/178610130-fb6e0c02-9f26-4079-ac34-7021676f3b83.png)
+
+> Successful create_infrastructure job
+
+- > Once the job has run successfully, check for your new stack in CloudFormation in the AWS Console to see if it was created.
+
+![Screenshot from 2022-07-12 19-56-27](https://user-images.githubusercontent.com/40290711/178610274-cd6cd0c6-b8f1-4825-b77f-5f0a94ce0a97.png)
+
+- > The Cloudformation stack created due to aws cloudformation deploy command present in the CircleCI job.
+
+> Lastly, remove the stack manually from Cloudformation in the AWS Console to clean up.
+
+The End
