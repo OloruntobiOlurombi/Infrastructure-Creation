@@ -80,8 +80,75 @@ Resources:
 > ***Important points:***
 
 > Be mindful of copy-pasting the code above. It may break the YAML indentation.
+
 > Change the KeyName and ImageId, as applicable to you.
+
 > We have used the udacity as the KeyName. That refers to the key pair we created before.
+
 > Fetch and use the correct AMI ID similar to as shown in the snapshot below.
 
+![image](https://user-images.githubusercontent.com/40290711/178607192-4c78c028-3498-4a6a-af65-3aeb89dcf2d1.png)
 
+##### Step 4: Create the CircleCI Config file
+
+- > The ./circleci/config.yml file will have the following sections:
+
+
+```
+version: 2.1
+# Use a package of configuration called an orb.
+orbs:
+  # Choose either one of the orbs below
+  # welcome: circleci/welcome-orb@0.4.1
+  # aws-cli: circleci/aws-cli@2.0.3
+# Define the jobs we want to run for this project
+jobs:
+  myjob1:  # Choose any name, such as `build`
+      # The primary container, where your job's commands will run
+      docker:
+        - image: 
+      steps:
+        - checkout # check out the code in the project directory
+        - run: echo "hello world" # run the `echo` command
+# Sequential workflow
+workflows:
+  # Name the workflow
+  myWorkflow:
+    jobs:
+      - myjob1
+      - myjob2
+      
+```
+
+- > Create a job in your Circle CI config file named create_infrastructure.
+
+```
+create_infrastructure: 
+      docker:
+        - image: amazon/aws-cli
+      steps:
+        - checkout
+        - run:
+            name: Create Cloudformation Stack
+            command: |
+              aws cloudformation deploy \
+                --template-file template.yml \
+                --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:5} \
+                --region us-east-1
+```
+- > Be mindful of copying-pasting the YAML code above. The job code above:
+
+- > uses amazon/aws-cli docker image that has AWS CLI installed already.
+
+- > executes the CloudFormation template to create the infrastructure.
+
+- > Add the create_infrastructure job to the workflows section, and comment out the unrelated jobs.
+
+> Tip: You should keep your build-workflow minimal. The CircleCI build time depends on how many jobs a user wants to run on their containers.
+
+```
+workflows:
+  my_workflow:
+      jobs:
+        - create_infrastructure
+```                
