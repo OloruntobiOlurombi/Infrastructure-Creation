@@ -25,6 +25,9 @@
 
 ![image](https://user-images.githubusercontent.com/40290711/178592636-08d126ae-d61a-4f39-9dcd-75af47b69c17.png)
 
+![Screenshot from 2022-07-12 17-10-14](https://user-images.githubusercontent.com/40290711/178594066-0d8141e9-a92f-4213-a766-47a4bd8dd15d.png)
+
+
 
 ##### Step 2
 
