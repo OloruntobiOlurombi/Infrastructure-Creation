@@ -14,7 +14,7 @@
 
 #### STEPS
 
-##### Step 1
+##### Step 1: Set up a CircleCI project
 - > Set up a CircleCI project:
 
 - > Go to https://app.circleci.com/ and set up a new project associated with your Github repository.
@@ -29,15 +29,59 @@
 
 
 
-##### Step 2
+##### Step 2: Set up Environment variables
 
 - > To use the AWS CLI in your jobs you'll need to the following environment variables to the in Circle CI > Project Settings > environment variables. The value of these variables can be fetched from the AWS IAM user.
 
 - > If not already, create an AWS IAM user with programmatic access, and it will generate these credentials.
+```
+AWS_ACCESS_KEY_ID
+AWS_DEFAULT_REGION
+AWS_SECRET_ACCESS_KEY
+```
+
+- > Note - While saving the environment variables in the Circle CI project settings, use capital case as discussed in this thread and also mentioned here (see the DEFAULT column for the correct names).
+
+- > Another useful reference: Setting an environment variable in a project. Do read about the various types of environment variables and their relative priorities.
+
+![image](https://user-images.githubusercontent.com/40290711/178605234-8eaa991d-a459-4a89-9def-0f70ae8df33b.png)
+
+##### Step 3. Create the CloudFormation template
+- > Create a simple template - template.yml that will create an EC2 instance and the associated security group. This should be pushed into your git repo.
+
+```
+# Exercise - Rollback
+AWSTemplateFormatVersion: 2010-09-09
+Description: "Author: OLORUNTOBI"
+Resources:
+  EC2Instance:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      SecurityGroups:
+        - !Ref InstanceSecurityGroup
+      # Change this, as applicable to you      
+      KeyName: udacity
+      # Change this, as applicable to you
+      # You may need to find out what instance types are available in your region - use https://cloud-images.ubuntu.com/locator/ec2/
+      ImageId: 'ami-052efd3df9dad4825' 
+      InstanceType: t2.micro
+  InstanceSecurityGroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupDescription: Enable SSH access via port 22
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: '22'
+          ToPort: '22'
+          CidrIp: 0.0.0.0/0 
 
 
+```
+> ***Important points:***
 
-
-
+> Be mindful of copy-pasting the code above. It may break the YAML indentation.
+> Change the KeyName and ImageId, as applicable to you.
+> We have used the udacity as the KeyName. That refers to the key pair we created before.
+> Fetch and use the correct AMI ID similar to as shown in the snapshot below.
 
 
